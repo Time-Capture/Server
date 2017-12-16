@@ -4,14 +4,20 @@ const uuid = require('uuid/v4');
 const controller = require('./user_controller');
 const middleWare = require('../../middle/value');
 
+router.route('/').get((req, res) => {
+    console.log('test');
+    res.send('test').end();
+})
+
 router.route('/signup').post(middleWare.check_user, (req, res) => {
     console.log('유저 회원가입');
     let id = req.body.id;
     let pw = req.body.password;
     let name = req.body.name;
+    let school = req.body.school;
     user.findOne({
             'id': id,
-            'password': pw
+            'password': pw,
         })
         .then((f_user) => {
             if (f_user) {
@@ -23,7 +29,8 @@ router.route('/signup').post(middleWare.check_user, (req, res) => {
                     'id': id,
                     'password': pw,
                     'name': name,
-                    'uuid': uuid()
+                    'uuid': uuid(),
+                    'school': school
                 });
                 obj.save(() => {
                     console.log(id + 'DB Save');
