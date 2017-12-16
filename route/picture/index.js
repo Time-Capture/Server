@@ -10,15 +10,15 @@ router.route('/picture/add').post(middleWare.check_token, (req, res) => { // 사
     user.findOne({ 'uuid': token })
         .then((f_user) => {
             let time = controller.getTime();
-            if (f_user.images.hasOwnProperty('2017-12-7')) {
+            if (f_user.images.hasOwnProperty(time)) {
                 console.log('추가 이미지');
-                let array = f_user.images['2017-12-7'];
+                let array = f_user.images[time];
                 array.push({ 'img': token + '_' + req.files.photo.name, 'friend': friend });
-                f_user.images['2017-12-7'] = array;
+                f_user.images[time] = array;
             } else {
                 console.log('그날의 처음 이미지');
                 let array = f_user.images;
-                array['2017-12-7'] = [{ 'img': token + '_' + req.files.photo.name, 'friend': friend }];
+                array[time] = [{ 'img': token + '_' + req.files.photo.name, 'friend': friend }];
                 f_user.images = array;
             }
 
