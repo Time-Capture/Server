@@ -48,7 +48,12 @@ router.route('/signin').post(middleWare.check_user, (req, res) => {
     let pw = req.body.password;
     user.findOne({ 'id': id, 'password': pw })
         .then((f_user) => {
-            { f_user ? res.status(200).json({ 'token': f_user.uuid }).end() : res.status(400).end() }
+            if (f_user) {
+                req.session.key = f_user.uuid;
+                res.status(200).json({ 'token': f_user.uuid }).end()
+            } else {
+                res.status(400).end();
+            }
         })
 });
 

@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const db = require('./database/conn');
+const session = require('express-session');
 const route = require('./route');
 const cors = require('cors');
 const app = express();
@@ -12,8 +13,12 @@ app.use(bodyparser.urlencoded({ extended: false }));
 
 app.use(cors());
 app.use(morgan('dev'));
-
-app.use(express.static(__dirname + '/static'));
+app.use(session({
+    key: 'appjam',
+    secret: 'secret',
+    resave: false
+}));
+app.use(express.static(__dirname));
 
 app.use(bodyparser.json());
 app.use(fileUpload());
