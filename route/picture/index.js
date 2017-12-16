@@ -14,12 +14,12 @@ router.route('/picture/add').post(middleWare.check_token, (req, res) => { // 사
             if (f_user.images.hasOwnProperty(time)) {
                 console.log('추가 이미지');
                 let array = f_user.images[time];
-                array.push({ 'img': token + '_' + req.files.photo.name, 'friend': [friend] });
+                array.push({ 'img': token + '_' + req.files.photo.name, 'friend': friend });
                 f_user.images[time] = array;
             } else {
                 console.log('그날의 처음 이미지');
                 let array = f_user.images;
-                array[time] = [{ 'img': token + '_' + req.files.photo.name, 'friend': [friend] }];
+                array[time] = [{ 'img': token + '_' + req.files.photo.name, 'friend': friend }];
                 f_user.images = array;
             }
 
@@ -40,9 +40,11 @@ router.route('/picture/view').post(middleWare.check_token, (req, res) => {
             if (date) {
                 let arr = new Array();
                 for (let i in f_user.images) {
-                    arr.push(f_user.images[i]);
+                    let obj = {}
+                    obj[i] = f_user.images[i];
+                    arr.push(obj);
                     if (i == date) {
-                        res.status(200).json({ 'view': arr });
+                        res.status(200).json({ 'key': arr });
                     }
                 }
             } else {
@@ -60,7 +62,7 @@ router.route('/picture/view').post(middleWare.check_token, (req, res) => {
                         }
                     }
                 }
-                res.status(403).json({ 'friend': friendCount, 'image': imageCount }).end();
+                res.status(403).json({ 'key': { 'friend': friendCount, 'image': imageCount } }).end();
             }
         });
 });

@@ -51,7 +51,7 @@ router.route('/signin').post(middleWare.check_user, (req, res) => {
         .then((f_user) => {
             if (f_user) {
                 req.session.key = f_user.uuid;
-                res.status(200).json({ 'token': f_user.uuid, 'name': f_user.name }).end()
+                res.status(200).json({ 'key': { 'token': f_user.uuid, 'name': f_user.name } }).end()
             } else {
                 res.status(400).end();
             }
