@@ -4,7 +4,7 @@ const middleWare = require('../../middle/value');
 const fs = require('fs');
 const controller = require('./picture_controller');
 
-router.route('/picture/add').post((req, res) => {
+router.route('/picture/add').post(middleWare.controllercheck_token, (req, res) => { // 사진 추가
     let token = req.body.token;
     user.findOne({ 'uuid': token })
         .then((f_user) => {
@@ -27,6 +27,10 @@ router.route('/picture/add').post((req, res) => {
                 })
             })
         })
+});
+
+router.route('/picture/view').post(middleWare.check_token, (req, res) => {
+
 });
 
 
