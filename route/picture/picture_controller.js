@@ -9,13 +9,16 @@ function getTime() {
 }
 
 exports.strDate = (d1) => {
+    console.log(d1);
     let data = JSON.parse(d1);
     for (let i in data) {
-        let start_Array = new Date(i.split("-"));
-        let end_Array = new Date(getTime().split("-"));
+        console.log(data);
+        let start_Array = new Date(i);
+        let end_Array = new Date(getTime());
         if (start_Array >= end_Array) {
             return start_Array;
         }
     }
+    return null;
 
 }

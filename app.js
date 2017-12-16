@@ -18,7 +18,7 @@ app.use(fileUpload());
 
 app.use('/', route);
 
-app.listen(process.env.PORT || 5024, () => {
+app.listen(process.env.PORT || 9024, () => {
     db.conn();
-    console.log('Server Port On 5024');
+    console.log('Server Port On 9024');
 })
