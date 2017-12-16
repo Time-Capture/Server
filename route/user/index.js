@@ -15,6 +15,7 @@ router.route('/signup').post(middleWare.check_user, (req, res) => {
     let pw = req.body.password;
     let name = req.body.name;
     let school = req.body.school;
+    let endTime = req.body.endTime;
     user.findOne({
             'id': id,
             'password': pw,
@@ -30,7 +31,8 @@ router.route('/signup').post(middleWare.check_user, (req, res) => {
                     'password': pw,
                     'name': name,
                     'uuid': uuid(),
-                    'school': school
+                    'school': school,
+                    'endTime': endTime
                 });
                 obj.save(() => {
                     console.log(id + 'DB Save');
