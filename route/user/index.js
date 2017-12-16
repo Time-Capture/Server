@@ -4,7 +4,7 @@ const uuid = require('uuid/v4');
 const controller = require('./user_controller');
 const middleWare = require('../../middle/value');
 
-router.route('/signup').post(middleWare, (req, res) => {
+router.route('/signup').post(middleWare.check_user, (req, res) => {
     console.log('유저 회원가입');
     let id = req.body.id;
     let pw = req.body.password;
@@ -33,7 +33,7 @@ router.route('/signup').post(middleWare, (req, res) => {
         });
 });
 
-router.route('/signin').post(middleWare, (req, res) => {
+router.route('/signin').post(middleWare.check_user, (req, res) => {
     console.log('유저 로그인');
     let id = req.body.id;
     let pw = req.body.password;
