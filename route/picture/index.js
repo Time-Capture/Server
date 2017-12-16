@@ -56,11 +56,9 @@ router.route('/picture/view').post(middleWare.check_token, (req, res) => {
                 for (let i in f_user.images) {
                     for (let j = 0; j < f_user.images[i].length; j++) {
                         for (let z = 0; z < f_user.images[i][j].friend.length; z++) {
-                            console.log(f_user.images[i][j].friend[z]);
                             friendCount++;
                         }
                     }
-
                 }
                 res.status(403).json({ 'friend': friendCount, 'image': imageCount }).end();
             }

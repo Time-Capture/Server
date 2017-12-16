@@ -16,6 +16,7 @@ router.route('/signup').post(middleWare.check_user, (req, res) => {
     let name = req.body.name;
     let school = req.body.school;
     let endTime = req.body.endTime;
+
     user.findOne({
             'id': id,
             'password': pw,
@@ -50,7 +51,7 @@ router.route('/signin').post(middleWare.check_user, (req, res) => {
         .then((f_user) => {
             if (f_user) {
                 req.session.key = f_user.uuid;
-                res.status(200).json({ 'token': f_user.uuid }).end()
+                res.status(200).json({ 'token': f_user.uuid, 'name': f_user.name }).end()
             } else {
                 res.status(400).end();
             }
