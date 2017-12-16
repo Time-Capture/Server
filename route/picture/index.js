@@ -4,21 +4,21 @@ const middleWare = require('../../middle/value');
 const fs = require('fs');
 const controller = require('./picture_controller');
 
-router.route('/picture/add').post(middleWare.check_user, (req, res) => { // 사진 추가
+router.route('/picture/add').post(middleWare.check_token, (req, res) => { // 사진 추가
     let token = req.body.token;
     let friend = req.body.friend;
     user.findOne({ 'uuid': token })
         .then((f_user) => {
             let time = controller.getTime();
-            if (f_user.images.hasOwnProperty(time)) {
+            if (f_user.images.hasOwnProperty('2017-12-7')) {
                 console.log('추가 이미지');
-                let array = f_user.images[time];
+                let array = f_user.images['2017-12-7'];
                 array.push({ 'img': token + '_' + req.files.photo.name, 'friend': friend });
-                f_user.images[time] = array;
+                f_user.images['2017-12-7'] = array;
             } else {
                 console.log('그날의 처음 이미지');
                 let array = f_user.images;
-                array[time] = [{ 'img': token + '_' + req.files.photo.name, 'friend': friend }];
+                array['2017-12-7'] = [{ 'img': token + '_' + req.files.photo.name, 'friend': friend }];
                 f_user.images = array;
             }
 

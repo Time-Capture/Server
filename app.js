@@ -5,10 +5,12 @@ const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const db = require('./database/conn');
 const route = require('./route');
+const cors = require('cors');
 const app = express();
 
 app.use(bodyparser.urlencoded({ extended: false }));
 
+app.use(cors());
 app.use(morgan('dev'));
 
 app.use(express.static(__dirname + '/static'));
