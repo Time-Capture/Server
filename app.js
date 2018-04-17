@@ -5,7 +5,8 @@ const express = require('express'),
 
 let app = express();
 
-const auth = require
+// const auth = require
+const PORT = process.env.PORT || 8000;
 
 let options = { 
   swaggerDefinition: {
@@ -43,6 +44,6 @@ app.get('/',(req,res)=>{
   res.send(s);
 });
 
-app.listen(8080,()=>{
+app.listen(PORT,()=>{
     console.log('serveer is runnung');
 });
