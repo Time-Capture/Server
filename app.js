@@ -1,31 +1,48 @@
-const express = require('express');
-const bodyparser = require('body-parser');
-const crypto = require('crypto');
-const fileUpload = require('express-fileupload');
-const morgan = require('morgan');
-const db = require('./database/conn');
-const session = require('express-session');
-const route = require('./route');
-const cors = require('cors');
-const app = express();
+const express = require('express'),
+  bodyParser = require('body-parser'),
+  swaggerUi = require('swagger-ui-express'), 
+  swaggerJSDoc = require('swagger-jsdoc'); 
 
-app.use(bodyparser.urlencoded({ extended: false }));
+let app = express();
 
-app.use(cors());
-app.use(morgan('dev'));
-app.use(session({
-    key: 'appjam',
-    secret: 'secret',
-    resave: false
-}));
-app.use(express.static(__dirname));
+const auth = require
 
-app.use(bodyparser.json());
-app.use(fileUpload());
+let options = { 
+  swaggerDefinition: {
+    info: {
+      title: 'timeCapture', // Title (required)
+      version: '2.0.0', // Version (required)
+    },
+  },
+  apis: ['./swagger/swagger.yaml']
+};
 
-app.use('/', route);
+let swaggerSpec = swaggerJSDoc(options); 
 
-app.listen(process.env.PORT || 9024, () => {
-    db.conn();
-    console.log('Server Port On 9024');
-})
+app.get('/api-docs.yaml', (req, res) => { 
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec)); 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use( (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'content-type, x-access-token'); 
+  next();
+});
+app.get('/',(req,res)=>{
+  let s = '';
+  for(var name in req.headers){
+      s += name + ' : ' + req.headers[name];
+      s += '\n';
+  } 
+  res.send(s);
+});
+
+app.listen(8080,()=>{
+    console.log('serveer is runnung');
+});

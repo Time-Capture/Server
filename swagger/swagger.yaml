@@ -1,0 +1,1272 @@
+swagger: "2.0"
+info:
+  description: "This is gaida API Docs. almost API using JWT."
+  version: "1.0.0"
+  title: "Swagger gaida"
+host: "awsdomain"
+basePath: "/"
+tags:
+- name: "Authentication"
+  description: "Everything about Auth"
+- name: "Token"
+  description: "Everything about Token"
+- name: "Config"
+  description: "Everything about Config(but not a user info)"
+- name: "Guide"
+  description: "Everything about guide"
+- name: "ProblemSolving"
+  description: "Everything about Problem solving"
+- name: "Ad"
+  description: "Everything about Ad"
+schemes:
+- "http"
+# change -g 
+# consumes:
+# - "application/json"
+# # The following media types may be passed as output in message bodies of the API.
+# # The media type(s) consumable by the requester is specified in the Accept header field
+# # of the corresponding request.
+# # The actual media type returned will be specified in the Content-Type header field
+# # of the of the response.
+# # The default of the Accept header is json, i.e. there is not needed to
+# # set the value, bust supporting it serves extensibility.
+# produces:
+# - "application/json"
+# # securityDefinitions:
+# #   Bearer:
+# #     type: apiKey
+# #     name: Authorization
+# #     in: header
+paths:
+  /auth/login:
+    post:
+      summary: user login
+      description: user login
+      produces: 
+      - application/json
+      tags: 
+      - Authentication
+      parameters: 
+      - in: query
+        name: id
+        description: user id
+        type: string
+        required: true
+      - in: query
+        name: password
+        description: user password
+        type: string
+        required: true
+      responses:
+        201:
+          description: success login and return token
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+              token:
+                type: string
+                example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6IiIsInVzZXJuYW1lIjoiZm9vIiwiZXhwIjoxNTA3MTQ2MzAxfQ.2ey2CYUnW9iUyyQJIYu856q9SaUxZU0FCejlA3FObPE"
+        400:
+          description: fail login and return nothing
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /auth/register:
+    post:
+      summary: user register
+      description: user register
+      produces: 
+      - application/json
+      tags: 
+      - Authentication
+      parameters: 
+      - in: query
+        name: id
+        description: user id
+        type: string
+        required: true
+      - in: query
+        name: password
+        description: user password
+        type: string
+        required: true
+      - in: query
+        name: name
+        description: user name
+        type: string
+        required: true
+      - in: query
+        name: eamil
+        description: email
+        type: string
+        required: true
+      responses:
+        200:
+          description: success register
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+        400:
+          description: fail register
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /auth/update:
+    put:
+      summary: user info update
+      description: user info update
+      produces: 
+      - applicateion/json
+      tags: 
+      - Authentication
+      parameters: 
+      - in: header
+        name: token
+        description: user token
+        type: string
+        required: true
+      - in: query
+        name: id
+        description: will update user id
+        type: string
+      - in: query
+        name: password
+        description: will update user password
+        type: string
+      - in: query
+        name: email
+        description: email
+        type: string
+      - in: query
+        name: name
+        description: name
+        type: string
+      responses:
+        200:
+          description: success update
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+        400:
+          description: fail update
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /auth/logout:
+    delete:
+      summary: user logout
+      description: user logout and delete token
+      produces: 
+      - application/json
+      tags:
+      - Authentication
+      parameters: 
+      - in: header
+        name: token
+        description: delete this token
+        type: string
+        required: true
+      responses:
+        200:
+          description: success delete
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+        400:
+          description: fali delete
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        
+        
+  /refreshToken:
+    get:
+      summary: token refresh
+      description: token refresh
+      produces: 
+      - application/json
+      tags: 
+      - Token
+      parameters: 
+      - in: header
+        name: token
+        description: expire token
+        type: string
+        required: true
+      responses:
+        200:
+          description: success refresh
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+              token:
+                type: string
+                example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6IiIsInVzZXJuYW1lIjoiZm9vIiwiZXhwIjoxNTA3MTQ2MzAxfQ.2ey2CYUnW9iUyyQJIYu856q9SaUxZU0FCejlA3FObPE"
+        400:
+          description: fail refresh
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /verifyToken:
+    get:
+      summary: verify token
+      description: check this token is verify
+      produces: 
+      - application/json
+      tags: 
+      - Token
+      parameters: 
+      - in: header
+        name: token
+        description: expire token
+        type: string
+        required: true
+      responses:
+        200:
+          description: success check
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+              token:
+                type: string
+                example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6IiIsInVzZXJuYW1lIjoiZm9vIiwiZXhwIjoxNTA3MTQ2MzAxfQ.2ey2CYUnW9iUyyQJIYu856q9SaUxZU0FCejlA3FObPE"
+        400:
+          description: fail check
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /config/age:
+    get:
+      summary: get a age
+      description: get a age
+      produces: 
+      - Application/json
+      tags:
+      - Config
+      parameters: 
+      - in: header
+        name: token
+        description: user token
+        type: string
+      - in: query
+        name: age
+        description: user age
+        type: number
+      responses:
+        200:
+          description: success config age
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+        400:
+          description: fali config age
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /config/interest:
+    post:
+      summary: get a interest
+      description: get a user interest
+      produces:
+      - Application/json
+      tags: 
+      - Config
+      parameters: 
+      - in: header
+        name: token
+        description: user token
+        type: string
+        required: true
+      - in: query
+        name: interest
+        description: user interest array [interest1, interest2, ...]
+        type: array
+        items:
+          type: string
+      responses:
+        200:
+          description: success config interest
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+        400:
+          description: fali config interest
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /guide:
+    post:
+      summary: "upload guide video"
+      description: "upload guide video"
+      produces:
+      - Application/json
+      consumes: 
+      # - application/x-www-form-urlencoded
+      - multipart/form-data
+      tags: 
+      - Guide
+      parameters: 
+      - in: header
+        name: token
+        description: user token
+        type: string
+        required: true
+      - in: formData
+        name: video
+        description: guide video
+        type: file
+        required: true
+      - in: formData
+        name: title
+        description: video title
+        type: string
+        required: true
+      - in: formData
+        name: desc
+        description: video desc
+        type: string
+        required: true
+      - in: formData
+        name: guider
+        description: who upload video
+        type: string
+        required: true
+      - in: formData
+        name: interest
+        description: video category [category1, category2, ...]
+        type: array
+        items:
+          type: string
+      responses:
+        200:
+          description: success upload guide video
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+        400:
+          description: fali upload guide video
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /guide/seacrh:
+    get:
+      summary: find guide  
+      description: search keword and find guide which you want
+      produces:
+      - Application/json
+      tags: 
+      - Guide
+      parameters: 
+      - in: query
+        name: keyword
+        description: search keyword
+        type: string
+      - in: query
+        name: sort
+        description: 1  view 2 asce 3 desc
+        type: number
+      responses:
+        200:
+          description: success search and return result
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "suceess"
+              result:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    id:
+                      type: number
+                    guider:
+                      type: string
+                    view:
+                      type: number
+                    picture:
+                      type: string
+                  example: 
+                  - title: testTitle
+                    id: testIndex
+                    guider: testUser
+                    view: 34
+                    picture: www.picuterurl
+        400:
+          description: fail search
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+  /guide/{id}:
+    get:
+      summary: find guide  
+      description: search keword and find guide which you want
+      produces:
+      - Application/json
+      tags: 
+      - Guide
+      parameters: 
+      - in: path
+        name: id
+        description: guide id
+        type: number
+        required: true
+      responses:
+        200:
+          description: success and return guide
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "suceess"
+              result:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  id:
+                    type: number
+                  guider:
+                    type: string
+                  view:
+                    type: number
+                  video:
+                    type: string
+                example: 
+                - title: testTitle
+                  id: testIndex
+                  guider: testUser
+                  view: 34
+                  picture: www.videourl
+        400:
+          description: fail search
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+  /problem:
+    post:
+      summary: "upload problem video"
+      description: "upload problem video"
+      produces:
+      - Application/json
+      consumes: 
+      # - application/x-www-form-urlencoded
+      - multipart/form-data
+      tags: 
+      - ProblemSolving
+      parameters: 
+      - in: header
+        name: token
+        description: user token
+        type: string
+        required: true
+      - in: formData
+        name: video
+        description: problem video
+        type: file
+        required: true
+      - in: formData
+        name: title
+        description: video title
+        type: string
+        required: true
+      - in: formData
+        name: desc
+        description: video desc
+        type: string
+        required: true
+      - in: formData
+        name: guider
+        description: who upload video
+        type: string
+        required: true
+      - in: formData
+        name: interest
+        description: video category [category1, category2, ...]
+        type: array
+        items:
+          type: string
+      responses:
+        200:
+          description: success upload problem video
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+        400:
+          description: fali upload problem video
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /problem/seacrh:
+    get:
+      summary: find guide  
+      description: search keword and find guide which you want
+      produces:
+      - Application/json
+      tags: 
+      - ProblemSolving
+      parameters: 
+      - in: query
+        name: keyword
+        description: search keyword
+        type: string
+      - in: query
+        name: sort
+        description: 1  view 2 asce 3 desc
+        type: number
+      responses:
+        200:
+          description: success search and return result
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "suceess"
+              result:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    id:
+                      type: number
+                    guider:
+                      type: string
+                    view:
+                      type: number
+                    picture:
+                      type: string
+                  example: 
+                  - title: testTitle
+                    id: testIndex
+                    guider: testUser
+                    view: 34
+                    picture: www.picuterurl
+        400:
+          description: fail search
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+  /problem/{id}:
+    get:
+      summary: find problem  
+      description: search keword and find problem which you want
+      produces:
+      - Application/json
+      tags: 
+      - ProblemSolving
+      parameters: 
+      - in: path
+        name: id
+        description: problem id
+        type: number
+        required: true
+      responses:
+        200:
+          description: success and return problem
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "suceess"
+              result:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  id:
+                    type: number
+                  guider:
+                    type: string
+                  view:
+                    type: number
+                  video:
+                    type: string
+                example: 
+                - title: testTitle
+                  id: testIndex
+                  guider: testUser
+                  view: 34
+                  picture: www.videourl
+        400:
+          description: fail search
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+  /ad:
+    post:
+      summary: "upload ad video"
+      description: "upload ad video"
+      produces:
+      - Application/json
+      consumes: 
+      # - application/x-www-form-urlencoded
+      - multipart/form-data
+      tags: 
+      - Ad
+      parameters: 
+      - in: header
+        name: token
+        description: user token
+        type: string
+        required: true
+      - in: formData
+        name: video
+        description: ad video
+        type: file
+        required: true
+      - in: formData
+        name: title
+        description: video title
+        type: string
+        required: true
+      - in: formData
+        name: desc
+        description: video desc
+        type: string
+        required: true
+      - in: formData
+        name: guider
+        description: who upload video
+        type: string
+        required: true
+      - in: formData
+        name: interest
+        description: video category [category1, category2, ...]
+        type: array
+        items:
+          type: string
+      responses:
+        200:
+          description: success upload ad video
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+        400:
+          description: fali upload ad video
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /ad/seacrh:
+    get:
+      summary: find guide  
+      description: search keword and find ad which you want
+      produces:
+      - Application/json
+      tags: 
+      - Ad
+      parameters: 
+      - in: query
+        name: keyword
+        description: search keyword
+        type: string
+      - in: query
+        name: sort
+        description: 1  view 2 asce 3 desc
+        type: number
+      responses:
+        200:
+          description: success search and return result
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "suceess"
+              result:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    id:
+                      type: number
+                    guider:
+                      type: string
+                    view:
+                      type: number
+                    picture:
+                      type: string
+                  example: 
+                  - title: testTitle
+                    id: testIndex
+                    guider: testUser
+                    view: 34
+                    picture: www.picuterurl
+        400:
+          description: fail search
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+  /ad/{id}:
+    get:
+      summary: find ad  
+      description: search keword and find ad which you want
+      produces:
+      - Application/json
+      tags: 
+      - Ad
+      parameters: 
+      - in: path
+        name: id
+        description: ad id
+        type: number
+        required: true
+      responses:
+        200:
+          description: success and return ad
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "suceess"
+              result:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  id:
+                    type: number
+                  guider:
+                    type: string
+                  view:
+                    type: number
+                  video:
+                    type: string
+                example: 
+                - title: testTitle
+                  id: testIndex
+                  guider: testUser
+                  view: 34
+                  picture: www.videourl
+        400:
+          description: fail search
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "error message"
+  /ad/page:
+    post:
+      summary: create ad page 
+      description: create ad page 
+      produces:
+      - Application/json
+      consumes: 
+      # - application/x-www-form-urlencoded
+      - multipart/form-data
+      tags: 
+      - Ad
+      parameters: 
+      - in: header
+        name: token
+        description: user token
+        type: string
+      - in: formData
+        name: ader
+        description: user who promote app
+        type: string
+      - in: formData
+        name: title
+        description: ad page title
+        type: string
+      - in: formData
+        name: picture
+        description: picture
+        type: file
+      - in: formData
+        name: desc
+        description: page desc
+        type: string
+      responses:
+        200:
+          description: success create page
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+        400:
+          description: fali create page
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+  /ad/page/new:
+    post:
+      summary: create ad on page
+      description: create ad on page 
+      produces:
+      - Application/json
+      consumes: 
+      # - application/x-www-form-urlencoded
+      - multipart/form-data
+      tags: 
+      - Ad
+      parameters: 
+      - in: header
+        name: token
+        description: user token
+        type: string
+        required: true
+      - in: formData
+        name: video
+        description: ad video
+        type: file
+        required: true
+      - in: formData
+        name: title
+        description: video title
+        type: string
+        required: true
+      - in: formData
+        name: desc
+        description: video desc
+        type: string
+        required: true
+      - in: formData
+        name: guider
+        description: who upload video
+        type: string
+        required: true
+      - in: formData
+        name: interest
+        description: video category [category1, category2, ...]
+        type: array
+        items:
+          type: string
+      responses:
+        200:
+          description: success upload ad video
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "success"
+        400:
+          description: fali upload ad video
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        500:
+          description: server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "error message"
+        

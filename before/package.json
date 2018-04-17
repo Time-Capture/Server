@@ -1,0 +1,43 @@
+{
+  "name": "time_cpature",
+  "version": "1.0.0",
+  "description": "Server Repository",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Time-Capture/Server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Time-Capture/Server/issues"
+  },
+  "homepage": "https://github.com/Time-Capture/Server#readme",
+  "dependencies": {
+    "async": "^2.5.0",
+    "body-parser": "^1.17.2",
+    "bson": "^1.0.4",
+    "cors": "^2.8.4",
+    "crypto": "0.0.3",
+    "ejs": "^2.5.6",
+    "express": "^4.16.2",
+    "express-fileupload": "^0.2.0",
+    "express-method-override": "0.0.3",
+    "express-session": "^1.15.6",
+    "formidable": "^1.1.1",
+    "imagemagick": "^0.1.3",
+    "mongo-xlsx": "^1.0.12",
+    "mongoose": "^4.11.9",
+    "morgan": "^1.9.0",
+    "multer": "^1.3.0",
+    "multiparty": "^4.1.3",
+    "node-cmd": "^3.0.0",
+    "nodemailer": "^4.0.1",
+    "nodemailer-smtp-pool": "^2.8.3",
+    "styliner": "^1.0.3",
+    "uuid": "^3.1.0"
+  }
+}
